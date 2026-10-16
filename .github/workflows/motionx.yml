@@ -1,3 +1,4 @@
+
 name: Build MotionX IPA
 
 on:
@@ -6,18 +7,15 @@ on:
 jobs:
   build:
     runs-on: macos-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Check files
         run: |
-          echo "Repository files:"
+          echo "Checking repository files"
           ls -la
-          echo "Swift files:"
           find . -maxdepth 4 -name "*.swift"
-          echo "Project configuration:"
           test -f project.yml
 
       - name: Install XcodeGen
@@ -37,7 +35,7 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Package unsigned IPA
+      - name: Package IPA
         run: |
           mkdir -p Payload
           cp -R build/Build/Products/Release-iphoneos/MotionX.app Payload/
