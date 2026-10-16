@@ -1,0 +1,27 @@
+
+{
+  "expo": {
+    "name": "MotionX",
+    "slug": "motionx",
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "userInterfaceStyle": "dark",
+    "scheme": "motionx",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.motionx.editor",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "MotionX needs access to your photos and videos so you can edit them.",
+        "NSPhotoLibraryAddUsageDescription": "MotionX needs permission to save your edited videos.",
+        "NSCameraUsageDescription": "MotionX uses your camera when you choose to record footage."
+      }
+    },
+    "plugins": [
+      "expo-video",
+      "expo-image-picker",
+      "expo-media-library",
+      "expo-splash-screen"
+    ]
+  }
+}
