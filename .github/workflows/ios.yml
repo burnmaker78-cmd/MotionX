@@ -12,35 +12,34 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Find Xcode project
-        id: project
+      - name: Select Xcode
         run: |
-          PROJECT=$(find . -maxdepth 5 -name "*.xcodeproj" -print -quit)
-          if [ -z "$PROJECT" ]; then
-            echo "No Xcode project found."
-            echo "The MotionX Xcode project must be added first."
-            exit 1
-          fi
-          echo "path=$PROJECT" >> "$GITHUB_OUTPUT"
+          sudo xcode-select -s "$(find /Applications \
+            -maxdepth 1 -name 'Xcode*.app' | sort | tail -1)/Contents/Developer"
+          xcodebuild -version
 
-      - name: Build unsigned IPA
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        run: xcodegen generate
+
+      - name: Build MotionX
         run: |
-          PROJECT="${{ steps.project.outputs.path }}"
-          SCHEME=$(xcodebuild -list -json -project "$PROJECT" |
-            ruby -rjson -e 'puts JSON.parse(STDIN.read)["project"]["schemes"][0]')
           xcodebuild \
-            -project "$PROJECT" \
-            -scheme "$SCHEME" \
+            -project MotionX.xcodeproj \
+            -scheme MotionX \
             -configuration Release \
             -sdk iphoneos \
             -derivedDataPath build \
             CODE_SIGNING_ALLOWED=NO \
             build
 
-          APP=$(find build/Build/Products/Release-iphoneos \
-            -maxdepth 1 -name "*.app" -print -quit)
-          test -n "$APP"
-          mkdir -p Payload
+      - name: Package unsigned IPA
+        run: |
+          APP="build/Build/Products/Release-iphoneos/MotionX.app"
+          test -d "$APP"
+          mkdir Payload
           cp -R "$APP" Payload/
           zip -r MotionX-unsigned.ipa Payload
 
