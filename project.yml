@@ -1,0 +1,25 @@
+
+name: MotionX
+
+options:
+  bundleIdPrefix: com.miguel.motionx
+
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+
+targets:
+  MotionX:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - MotionXApp.swift
+      - ContentView.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.miguel.motionx.app
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: MotionX
+        TARGETED_DEVICE_FAMILY: "1,2"
